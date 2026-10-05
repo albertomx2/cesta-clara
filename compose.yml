@@ -1,0 +1,44 @@
+services:
+  web:
+    build: ./frontend
+    container_name: compra-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8081:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  api:
+    build: ./backend
+    container_name: compra-api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://compra:${POSTGRES_PASSWORD:?Configura POSTGRES_PASSWORD en .env}@db:5432/compra
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  db:
+    image: postgres:17-alpine
+    container_name: compra-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: compra
+      POSTGRES_USER: compra
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configura POSTGRES_PASSWORD en .env}
+    volumes:
+      - compra_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U compra -d compra"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+
+volumes:
+  compra_db:

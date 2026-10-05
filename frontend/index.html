@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Lista de la compra inteligente con comparación de supermercados y resumen nutricional.">
+  <title>Cesta Clara</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2315a66d'/%3E%3Cpath d='M19 25h28l-3 22H22z' fill='white'/%3E%3Cpath d='M25 26c0-9 14-9 14 0' fill='none' stroke='%230d2b26' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260930-4">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Cesta Clara, inicio">
+      <span class="brand-mark">C</span><span>Cesta Clara</span>
+    </a>
+    <div class="top-actions">
+      <span class="live-badge"><i></i> Precios online</span>
+      <button id="refreshButton" class="button ghost" type="button" title="Volver a consultar todos los precios">Actualizar</button>
+      <button id="storesButton" class="button secondary" type="button">Supermercados <span id="storeCount"></span></button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="intro-card">
+      <div class="intro-copy">
+        <span class="eyebrow">Tu compra, mejor decidida</span>
+        <h1>¿Qué necesitas comprar?</h1>
+        <p>Añade productos y compararemos la cesta entre tus supermercados.</p>
+        <div class="search-wrap">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
+          <input id="productSearch" autocomplete="off" placeholder="Busca cualquier producto…" aria-label="Buscar un producto en supermercados">
+          <kbd>⌘ K</kbd>
+          <div id="searchResults" class="search-results" hidden></div>
+        </div>
+      </div>
+      <img src="assets/groceries.png" alt="Bolsa reutilizable con fruta, verdura y alimentos básicos">
+    </section>
+
+    <div class="content-grid">
+      <section class="list-panel" aria-labelledby="listTitle">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Lista actual</span>
+            <h2 id="listTitle">Mi compra</h2>
+          </div>
+          <span id="itemCount" class="count-pill">0 productos</span>
+        </div>
+        <div id="shoppingList" class="shopping-list" aria-live="polite"></div>
+      </section>
+
+      <aside class="summary-column">
+        <section class="total-card">
+          <span class="eyebrow light">Mejor combinación</span>
+          <div class="total-line"><strong id="optimalTotal">0,00 €</strong><span>estimado</span></div>
+          <div id="savingsText" class="savings"></div>
+          <div id="splitPlan" class="split-plan"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="comparisonTitle">
+          <div class="panel-title"><h3 id="comparisonTitle">Cesta por supermercado</h3><span>Una sola tienda</span></div>
+          <div id="storeTotals" class="store-totals"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="dataTitle">
+          <div class="panel-title"><h3 id="dataTitle">Datos de los precios</h3><span>Fuentes online</span></div>
+          <div id="priceInfo" class="price-info"></div>
+        </section>
+
+        <section class="panel recommendation-panel" aria-labelledby="recommendationTitle">
+          <div class="panel-title"><h3 id="recommendationTitle">Recomendaciones</h3></div>
+          <div id="recommendations"></div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <dialog id="storesDialog">
+    <form method="dialog" class="dialog-card" id="storesForm">
+      <div class="dialog-heading"><div><span class="eyebrow">Comparación</span><h2>Elige supermercados</h2></div><button class="icon-button" value="cancel" aria-label="Cerrar">×</button></div>
+      <p>Consultaremos en directo los catálogos disponibles. Los precios pueden variar según la zona y la tienda física.</p>
+      <div id="storeOptions" class="store-options"></div>
+      <div class="dialog-actions"><button class="button secondary" value="cancel">Cancelar</button><button class="button primary" id="saveStores" value="default">Guardar selección</button></div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js?v=20260930-5"></script>
+</body>
+</html>
